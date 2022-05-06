@@ -70,7 +70,7 @@ function setUpCamera() {
     // defaut is at (0,0,-5) looking at the origin
     let viewMatrix = glMatrix.mat4.create();
     glMatrix.mat4.lookAt(viewMatrix, [0, 0, -5], [0, 0, 0], [0, 1, 0]);
-    gl.uniformMatrix4fv(program.uViewT, false, viewMatrix);
+    gl.uniformMatrix4fv(sphereGlobeProgram.uViewT, false, viewMatrix);
 }
 
 //
