@@ -5,10 +5,10 @@
   let gl;
 
   // The programs
-  let sphereGlobeProgram;
+  let sphereProgram;
 
   // the textures
-  let worldTexture;
+  let orbTexture;
   
   // VAOs for the objects
   var mySphere = null;
@@ -37,14 +37,14 @@
 function setUpTextures(){
     
     // get some texture space from the gpu
-    worldTexture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, worldTexture);
+    orbTexture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, orbTexture);
     
     // load the actual image
     var worldImage = document.getElementById ('world-texture')
         
     // bind the texture so we can perform operations on it
-    gl.bindTexture (gl.TEXTURE_2D, worldTexture);
+    gl.bindTexture (gl.TEXTURE_2D, orbTexture);
         
     // load the texture data
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, worldImage.width, worldImage.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, worldImage);
@@ -70,7 +70,7 @@ function setUpCamera() {
     // defaut is at (0,0,-5) looking at the origin
     let viewMatrix = glMatrix.mat4.create();
     glMatrix.mat4.lookAt(viewMatrix, [1, 1, -10], [0, 0, 0], [0, 1, 0]);
-    gl.uniformMatrix4fv(sphereGlobeProgram.uViewT, false, viewMatrix);
+    gl.uniformMatrix4fv(sphereProgram.uViewT, false, viewMatrix);
 }
 
 //
@@ -88,7 +88,7 @@ function drawCurrentShape () {
     // curTexture.   If will have the value of "globe", "myimage" or "proc"
     
     // which program are we using
-    var program = sphereGlobeProgram;
+    var program = sphereProgram;
     
     // set up your uniform variables for drawing
     gl.useProgram (program);
@@ -96,7 +96,7 @@ function drawCurrentShape () {
     // set up texture uniform & other uniforms that you might
     // have added to the shader
     gl.activeTexture (gl.TEXTURE0);
-    gl.bindTexture (gl.TEXTURE_2D, worldTexture);
+    gl.bindTexture (gl.TEXTURE_2D, orbTexture);
     gl.uniform1i (program.uTheTexture, 0);
     
     // set up rotation uniform
@@ -154,11 +154,11 @@ function createShapes() {
     
     // the sphere
     mySphere = new Sphere (20,20);
-    mySphere.VAO = bindVAO (mySphere, sphereGlobeProgram);
+    mySphere.VAO = bindVAO (mySphere, sphereProgram);
     
     // the cube
     myCube = new Cube (20);
-    myCube.VAO = bindVAO (myCube, sphereGlobeProgram);
+    myCube.VAO = bindVAO (myCube, sphereProgram);
     
 }
 
@@ -310,7 +310,7 @@ function bindVAO (shape, program) {
     window.addEventListener('keydown', gotKey ,false);
 
     // Read, compile, and link your shaders
-    sphereGlobeProgram = initProgram('sphereMap-V', 'sphereMap-F');
+    sphereProgram = initProgram('sphereMap-V', 'sphereMap-F');
     
     // create and bind your current object
     createShapes();
