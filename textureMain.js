@@ -56,6 +56,20 @@ function setUpTextures(){
 }
 
 
+function pointCloud(pointCount) {
+    let points = [];
+    for (let i = 0; i < pointCount; i++) {
+        const x = Math.random() - 0.5;
+        const y = Math.random() - 0.5;
+        const z = Math.random() - 0.5;
+        const point = [x, y, z];
+        const outPoint = vec3.normalize(vec3.create(), point);
+
+        points.push(...outPoint);
+    }
+    return points;
+}
+
 // Set up camera and  projection matrices
 function setUpCamera() {
 
