@@ -319,7 +319,7 @@ function bindVAO (shape, program) {
     setUpTextures();
 
     // set up your camera
-    // setUpCamera();
+    setUpCamera();
     
     // do a draw
     draw();
