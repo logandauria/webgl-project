@@ -5,7 +5,7 @@
   let gl;
 
   // The programs
-  let sphereProgram;
+  let phongProgram;
 
   // the textures
   let orbTexture;
@@ -13,6 +13,8 @@
   // VAOs for the objects
   var mySphere = null;
   var myCube = null;
+  var hand1 = null;
+  var hand2 = null;
 
   // what is currently showing
   let nowShowing = 'Sphere';
@@ -59,15 +61,15 @@ function setUpTextures(){
 function pointCloud(pointCount) {
     let points = [];
     for (let i = 0; i < pointCount; i++) {
-        const x = Math.random() - 0.5;
-        const y = Math.random() - 0.5;
-        const z = Math.random() - 0.5;
+        const x = (Math.random() * 2) - 1;
+        const y = (Math.random() * 2) - 1;
+        const z = (Math.random() * 2) - 1;
         const point = [x, y, z];
         const outPoint = vec3.normalize(vec3.create(), point);
 
         points.push(...outPoint);
     }
-    return points;
+    return new Float32Array(points);
 }
 
 // Set up camera and  projection matrices
@@ -84,7 +86,7 @@ function setUpCamera() {
     // defaut is at (0,0,-5) looking at the origin
     let viewMatrix = glMatrix.mat4.create();
     glMatrix.mat4.lookAt(viewMatrix, [1, 1, -10], [0, 0, 0], [0, 1, 0]);
-    gl.uniformMatrix4fv(sphereProgram.uViewT, false, viewMatrix);
+    gl.uniformMatrix4fv(phongProgram.uViewT, false, viewMatrix);
 }
 
 //
@@ -102,7 +104,7 @@ function drawCurrentShape () {
     // curTexture.   If will have the value of "globe", "myimage" or "proc"
     
     // which program are we using
-    var program = sphereProgram;
+    var program = phongProgram;
     
     // set up your uniform variables for drawing
     gl.useProgram (program);
@@ -156,23 +158,23 @@ function initProgram (vertexid, fragmentid) {
   return program;
 }
 
-///////////////////////////////////////////////////////////////////
-//
-//  No need to edit below this line.
-//
-////////////////////////////////////////////////////////////////////
-
 // general call to make and bind a new object based on current
 // settings..Basically a call to shape specfic calls in cgIshape.js
 function createShapes() {
     
     // the sphere
     mySphere = new Sphere (20,20);
-    mySphere.VAO = bindVAO (mySphere, sphereProgram);
+    mySphere.VAO = bindVAO (mySphere, phongProgram);
     
     // the cube
     myCube = new Cube (20);
-    myCube.VAO = bindVAO (myCube, sphereProgram);
+    myCube.VAO = bindVAO(myCube, phongProgram);
+
+    hand1 = new Cube(20);
+    hand1.VAO = bindVAO(hand1, phongProgram);
+
+    hand2 = new Cube(20);
+    hand2.VAO = bindVAO(hand2, phongProgram);
     
 }
 
@@ -324,7 +326,7 @@ function bindVAO (shape, program) {
     window.addEventListener('keydown', gotKey ,false);
 
     // Read, compile, and link your shaders
-    sphereProgram = initProgram('sphereMap-V', 'sphereMap-F');
+    phongProgram = initProgram('sphereMap-V', 'sphereMap-F');
     
     // create and bind your current object
     createShapes();
