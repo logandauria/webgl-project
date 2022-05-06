@@ -57,7 +57,7 @@ function setUpTextures(){
 
 
 // Set up camera and  projection matrices
-function setUpCamera() {
+/*function setUpCamera() {
 
     // set up your projection
     // defualt is orthographic projection
@@ -71,7 +71,7 @@ function setUpCamera() {
     let viewMatrix = glMatrix.mat4.create();
     glMatrix.mat4.lookAt(viewMatrix, [0, 0, -5], [0, 0, 0], [0, 1, 0]);
     gl.uniformMatrix4fv(sphereGlobeProgram.uViewT, false, viewMatrix);
-}
+}*/
 
 //
 // Draws the current shape with the
@@ -319,7 +319,7 @@ function bindVAO (shape, program) {
     setUpTextures();
 
     // set up your camera
-    setUpCamera();
+    // setUpCamera();
     
     // do a draw
     draw();
