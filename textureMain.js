@@ -55,6 +55,24 @@ function setUpTextures(){
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 }
 
+
+// Set up camera and  projection matrices
+function setUpCamera() {
+
+    // set up your projection
+    // defualt is orthographic projection
+    let projMatrix = glMatrix.mat4.create();
+    glMatrix.mat4.ortho(projMatrix, -5, 5, -5, 5, 1.0, 300.0);
+    gl.uniformMatrix4fv(program.uProjT, false, projMatrix);
+
+
+    // set up your view
+    // defaut is at (0,0,-5) looking at the origin
+    let viewMatrix = glMatrix.mat4.create();
+    glMatrix.mat4.lookAt(viewMatrix, [0, 0, -5], [0, 0, 0], [0, 1, 0]);
+    gl.uniformMatrix4fv(program.uViewT, false, viewMatrix);
+}
+
 //
 // Draws the current shape with the
 // current texture
@@ -299,6 +317,9 @@ function bindVAO (shape, program) {
     
     // set up your textures
     setUpTextures();
+
+    // set up your camera
+    setUpCamera();
     
     // do a draw
     draw();
